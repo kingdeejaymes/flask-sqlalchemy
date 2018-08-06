@@ -34,3 +34,14 @@ def update(sl_id):
     shopping_list.update()
 
     return create_json_response(shopping_list.to_dict())
+
+
+@shop.route('/delete/<string:sl_id>', methods=['DELETE'])
+def delete(sl_id):
+    shopping_list = ShoppingList.get(int(sl_id))
+
+    if shopping_list is None:
+        return create_json_response("Shopping List with ID: {}".format(sl_id) + " is not in the Database", 404)
+
+    shopping_list.delete()
+    return create_json_response("Shopping List with ID: {}".format(sl_id) + " was successfully deleted")
