@@ -1,5 +1,6 @@
-from services.sqlalchemy import BaseModel, db
-from models.Item import Item
+from project.models.Item import Item
+
+from project.services.sqlalchemy import BaseModel, db
 
 
 class ShoppingList(BaseModel):

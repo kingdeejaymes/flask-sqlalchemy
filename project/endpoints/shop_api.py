@@ -1,7 +1,9 @@
-from flask import Blueprint, request
-from models.ShoppingList import ShoppingList
-from services.utils import create_json_response
 import logging
+
+from flask import Blueprint, request
+from project.services.utils import create_json_response
+
+from project.models.ShoppingList import ShoppingList
 
 logging.getLogger().setLevel(logging.INFO)
 shop = Blueprint('shop', __name__, url_prefix='/api/shoplist')

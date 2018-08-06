@@ -1,4 +1,4 @@
-from services.sqlalchemy import BaseModel, db
+from project.services.sqlalchemy import BaseModel, db
 
 
 class Item(BaseModel):

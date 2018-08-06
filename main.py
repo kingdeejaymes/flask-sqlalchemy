@@ -1,8 +1,9 @@
-from flask import Flask
-from services.sqlalchemy import db
-from endpoints.shop_api import shop
 import logging
 
+from flask import Flask
+from project.services.sqlalchemy import db
+
+from project.endpoints.shop_api import shop
 
 logging.getLogger().setLevel(logging.DEBUG)
 app = Flask(__name__)
