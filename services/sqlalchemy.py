@@ -16,6 +16,10 @@ class BaseModel(db.Model):
         return db.session.query(cls).all()
 
     @classmethod
+    def get_by_wildcard(cls, field, keyword):
+        return db.session.query(cls).filter(field.like('%' + keyword + '%')).all()
+
+    @classmethod
     def get(cls, pkey):
         return db.session.query(cls).get(pkey)
 
@@ -31,9 +35,6 @@ class BaseModel(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
-
-    def refresh(self):
-        db.session.refresh(self)
 
     def to_dict(self):
         return dict((k, getattr(self, k)) for k in self.__table__.c.keys())

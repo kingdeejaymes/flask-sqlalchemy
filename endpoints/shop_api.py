@@ -14,6 +14,20 @@ def get_all():
     return create_json_response(shopping_lists, is_list=True)
 
 
+@shop.route('/find_by', methods=['GET'])
+def get_by_field():
+    title = request.args.get('title')
+    if title is None:
+        create_json_response("Title is missing", 404)
+
+    shopping_list = ShoppingList.get_by_wildcard(ShoppingList.title, title)
+
+    if shopping_list is None:
+        return create_json_response("Shopping List with title: {}".format(title) + " is not in the Database", 404)
+
+    return create_json_response(shopping_list, is_list=True)
+
+
 @shop.route('/create', methods=['POST'])
 def create():
     req_body = request.get_json()
