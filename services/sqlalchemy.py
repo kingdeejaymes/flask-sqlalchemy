@@ -15,6 +15,10 @@ class BaseModel(db.Model):
     def all(cls):
         return db.session.query(cls).all()
 
+    @classmethod
+    def get(cls, pkey):
+        return db.session.query(cls).get(pkey)
+
     def save(self):
         db.session.add(self)
         db.session.commit()
