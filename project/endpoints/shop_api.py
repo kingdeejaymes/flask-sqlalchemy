@@ -1,9 +1,8 @@
-import logging
-
 from flask import Blueprint, request
 from project.services.utils import create_json_response
-
 from project.models.ShoppingList import ShoppingList
+from project.models.Item import Item
+import logging
 
 logging.getLogger().setLevel(logging.INFO)
 shop = Blueprint('shop', __name__, url_prefix='/api/shoplist')
@@ -35,6 +34,29 @@ def create():
     req_body = request.get_json()
     shopping_list = ShoppingList(**req_body).save()
     return create_json_response(shopping_list.to_dict())
+
+
+@shop.route('/<string:sl_id>/add_item/<string:item_id>', methods=['PUT'])
+def add_item(sl_id, item_id):
+    item = Item.get(int(item_id))
+    if item is None:
+        return create_json_response('Item with ID: {}'.format(item_id) + ' cannot be found', 404)
+
+    shopping_list = ShoppingList.get(int(sl_id))
+    if shopping_list is None:
+        return create_json_response('Shopping List with ID: {}'.format(sl_id) + ' cannot be found', 404)
+
+    shopping_list.items.append(item)
+    shopping_list.update()
+
+    items = shopping_list.items
+    shopping_list_dict = shopping_list.to_dict()
+    shopping_list_dict['items'] = []
+
+    for item in items:
+        shopping_list_dict['items'].append(item.to_dict())
+
+    return create_json_response(shopping_list_dict)
 
 
 @shop.route('/update/<string:sl_id>', methods=['PUT'])

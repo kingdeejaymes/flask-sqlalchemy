@@ -1,5 +1,3 @@
-from project.models.Item import Item
-
 from project.services.sqlalchemy import BaseModel, db
 
 
@@ -9,4 +7,4 @@ class ShoppingList(BaseModel):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), index=True, nullable=False)
     store_name = db.Column(db.String(200), nullable=False)
-    items = db.relationship(Item, backref=db.backref('shopping_list', lazy=True))
+    items = db.relationship('Item', backref=db.backref('shopping_list', lazy=True))
