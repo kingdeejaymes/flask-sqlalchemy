@@ -1,4 +1,3 @@
-import datetime
 from flask_sqlalchemy import SQLAlchemy
 import logging
 
@@ -7,9 +6,6 @@ db = SQLAlchemy()
 
 class BaseModel(db.Model):
     __abstract__ = True
-
-    meta_created_on = db.Column(db.DateTime, default=datetime.datetime.utcnow())
-    meta_updated_on = db.Column(db.DateTime, default=datetime.datetime.utcnow())
 
     @classmethod
     def all(cls):

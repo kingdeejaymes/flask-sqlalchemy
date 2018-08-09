@@ -1,5 +1,6 @@
 from project.services.sqlalchemy import BaseModel, db
 from project.models.Item import Item
+import datetime
 
 
 class ShoppingList(BaseModel):
@@ -8,6 +9,7 @@ class ShoppingList(BaseModel):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), index=True, nullable=False)
     store_name = db.Column(db.String(200), nullable=False)
+    created_on = db.Column(db.DateTime, default=datetime.datetime.utcnow())
     items = db.relationship('Item', backref=db.backref('shopping_list', lazy=True))
 
     @classmethod

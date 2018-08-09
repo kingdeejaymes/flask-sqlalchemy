@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from project.services.utils import create_json_response
+from project.services.utils import create_json_response, parse_items_response
 from project.models.ShoppingList import ShoppingList
 from project.models.Item import Item
 import logging
@@ -72,13 +72,7 @@ def add_item(sl_id, item_id):
 
     shopping_list.items.append(item)
     shopping_list.update()
-
-    items = shopping_list.items
-    shopping_list_dict = shopping_list.to_dict()
-    shopping_list_dict['items'] = []
-
-    for item in items:
-        shopping_list_dict['items'].append(item.to_dict())
+    shopping_list_dict = parse_items_response(shopping_list)
 
     return create_json_response(shopping_list_dict)
 
@@ -95,7 +89,9 @@ def update(sl_id):
     shopping_list.store_name = req_body['store_name']
     shopping_list.update()
 
-    return create_json_response(shopping_list.to_dict())
+    shopping_list_dict = parse_items_response(shopping_list)
+
+    return create_json_response(shopping_list_dict)
 
 
 @shop.route('/delete/<string:sl_id>', methods=['DELETE'])
