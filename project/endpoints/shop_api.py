@@ -15,8 +15,8 @@ def get_all():
     return create_json_response(shopping_lists, is_list=True)
 
 
-@shop.route('/find_by', methods=['GET'])
-def get_by_field():
+@shop.route('/find_by_title', methods=['GET'])
+def get_by_title():
     title = request.args.get('title')
     if title is None:
         create_json_response("Title is missing", 404)
@@ -25,6 +25,18 @@ def get_by_field():
 
     if shopping_list is None:
         return create_json_response("Shopping List with title: {}".format(title) + " is not in the Database", 404)
+
+    return create_json_response(shopping_list, is_list=True)
+
+
+@shop.route('/find_by_item', methods=['GET'])
+def get_by_item():
+    item_id = request.args.get('item_id')
+    if item_id is not None:
+        shopping_list = ShoppingList.get_by_item_id(item_id)
+
+    if shopping_list is None:
+        return create_json_response("Shopping List with item_id: {}".format(item_id) + " is not in the Database", 404)
 
     return create_json_response(shopping_list, is_list=True)
 
