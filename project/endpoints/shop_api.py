@@ -41,6 +41,18 @@ def get_by_item():
     return create_json_response(shopping_list, is_list=True)
 
 
+@shop.route('/find_by_item_name_wildcard', methods=['GET'])
+def get_by_item_name():
+    item_name = request.args.get('item_name')
+    if item_name is not None:
+        shopping_list = ShoppingList.get_by_item_name_wildcard(item_name)
+
+    if shopping_list is None:
+        return create_json_response("Shopping List with item_name: {}".format(item_name) + " is not in the Database", 404)
+
+    return create_json_response(shopping_list, is_list=True)
+
+
 @shop.route('/create', methods=['POST'])
 def create():
     req_body = request.get_json()
