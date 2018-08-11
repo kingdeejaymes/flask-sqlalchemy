@@ -20,9 +20,9 @@ class ShoppingList(BaseModel):
 
     @classmethod
     def get_by_item_id(cls, item_id):
-        return db.session.query(cls).join(Item, cls.items).filter(Item.item_ref_id == item_id)
+        return db.session.query(cls).join(Item, cls.items).filter(Item.id == item_id)
 
     @classmethod
     def get_by_item_name_wildcard(cls, item_name):
         return db.session.query(cls).join(Item, cls.items)\
-                 .filter(Item.item_id.name.like('%' + item_name + '%')).all()
+                 .filter(Item.name.like('%' + item_name + '%')).all()

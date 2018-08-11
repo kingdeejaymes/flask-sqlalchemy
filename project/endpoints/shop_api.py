@@ -57,7 +57,8 @@ def get_by_item_name():
 def create():
     req_body = request.get_json()
     shopping_list = ShoppingList(**req_body).save()
-    return create_json_response(shopping_list.to_dict())
+    shopping_list_dict = parse_items_response(shopping_list)
+    return create_json_response(shopping_list_dict)
 
 
 @shop.route('/<string:sl_id>/add_item/<string:item_id>', methods=['PUT'])
@@ -69,6 +70,10 @@ def add_item(sl_id, item_id):
     shopping_list = ShoppingList.get(int(sl_id))
     if shopping_list is None:
         return create_json_response('Shopping List with ID: {}'.format(sl_id) + ' cannot be found', 404)
+
+    is_existing_item = ShoppingList.get_by_item_id(item_id)
+    if is_existing_item is not None:
+        item.updated_quantity = item.updated_quantity + item.fixed_quantity
 
     shopping_list.items.append(item)
     shopping_list.update()
